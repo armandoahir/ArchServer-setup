@@ -1,0 +1,20 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - 8083:8096
+    volumes:
+      - /opt/jellyfin/config:/config
+      - /opt/jellyfin/cache:/cache
+      - /opt/jellyfin/media:/media
+    labels:
+      caddy: http://192.168.1.19
+      caddy.reverse_proxy: "{{upstreams 8096}}"
+    networks:
+      - seafile-net
+
+networks:
+  seafile-net:
+    name: seafile-net
