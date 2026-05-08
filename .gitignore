@@ -1,0 +1,44 @@
+# !! MAI caricare questi file !!
+
+# Chiavi private SSH
+/etc/ssh/ssh_host_*_key
+ssh_host_*_key
+*.pem
+*.key
+id_rsa
+id_ed25519
+id_ecdsa
+
+# WireGuard - chiavi e config reale
+wireguard/*.conf
+!wireguard/*.conf.template
+
+# Secrets e credenziali
+.env
+!.env.example
+*.secret
+*.secrets
+*_password*
+*_token*
+
+# Certificati SSL
+*.crt
+*.cert
+*.p12
+*.pfx
+/etc/ssl/private/
+
+# Docker volumes e dati runtime
+seafile-data/
+seafile-mysql/
+seadoc-data/
+seafile-caddy/
+
+# OS e editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

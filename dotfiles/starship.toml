@@ -1,0 +1,44 @@
+add_newline = false
+
+format = """
+$directory$git_branch$git_status$character"""
+
+[directory]
+style = "bold yellow"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " 🔒"
+
+[git_branch]
+symbol = " "
+style = "bold green"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "red"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = "⚡"
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+up_to_date = ""
+stashed = "📦"
+modified = "●"
+deleted = "✖"
+renamed = "➡"
+added = "✚"
+untracked = "…"
+
+[character]
+success_symbol = "[ ❯](bold white)"
+error_symbol = "[ ❯](bold red)"
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration]($style) "
+
+[username]
+disabled = true
+
+[hostname]
+disabled = true

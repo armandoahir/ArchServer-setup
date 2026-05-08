@@ -1,0 +1,16 @@
+# WireGuard configuration template
+# Copy to /etc/wireguard/wg0.conf and fill in your values
+# Generate keys with: wg genkey | tee privatekey | wg pubkey > publickey
+
+[Interface]
+PrivateKey = <YOUR_PRIVATE_KEY>
+Address = 10.0.0.1/24       # VPN subnet, server is .1
+ListenPort = 51820
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+# --- Peer example (repeat for each client) ---
+[Peer]
+PublicKey = <CLIENT_PUBLIC_KEY>
+PresharedKey = <PRESHARED_KEY>   # optional, generated with: wg genpsk
+AllowedIPs = 10.0.0.2/32
