@@ -14,14 +14,6 @@ Configuration and setup scripts for my Arch Linux home server running on an old 
 | **WireGuard** | VPN |
 | **Starship** | Shell prompt |
 
-## Hardware
-
-| Disk | Device | Mount | Contents |
-|------|--------|-------|----------|
-| Internal (932GB) | `sda` | `/` + `/home` | System + Nextcloud data |
-| Toshiba external (932GB) | `sdb` | `/mnt/esterno_backup` | Original photos — **never written automatically** |
-| External 2 (932GB) | `sdd` | `/mnt/nextcloud_hdd` | Compressed media, backups |
-
 ## Repository Structure
 
 ```
@@ -46,7 +38,11 @@ ArchServer-setup/
 │   └── starship.toml               # Starship prompt config
 ├── scripts/
 │   └── setup.sh                    # Full setup script
-├── .env.example                    # Env template
+├── seafile/                        # Seafile stack (removed, kept for reference)
+│   ├── seafile-server.yml
+│   ├── caddy.yml
+│   └── seadoc.yml
+├── .env.example                    # Seafile env template (legacy)
 └── .gitignore
 ```
 
@@ -55,7 +51,7 @@ ArchServer-setup/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/armandoahir/ArchServer-setup.git
+git clone https://github.com/<your-username>/ArchServer-setup.git
 cd ArchServer-setup
 ```
 
@@ -74,12 +70,14 @@ docker compose -f nextcloud.yml up -d
 ```
 
 Nextcloud will be available at `http://<server-ip>:8082`.
+
 Data is stored in `/home/nextcloud-data/data/`.
 
 ### 4. Start Jellyfin
 
 ```bash
-docker compose -f jellyfin/jellyfin.yml up -d
+cd /opt/jellyfin   # or wherever you deploy it
+docker compose -f /path/to/jellyfin.yml up -d
 ```
 
 Jellyfin will be available at `http://<server-ip>:8083`.
@@ -109,14 +107,6 @@ Quick example:
 
 Features: MP4/MOV → H.265, HEIC → JPG, dry-run mode, idempotent (safe to re-run).
 
-## Network
-
-| Interface | IP | Type |
-|-----------|-----|------|
-| `enp2s0f2` (ethernet) | `192.168.1.9` | Static |
-| `wlan0` (wifi) | `192.168.1.19` | DHCP |
-| `wg0` (WireGuard) | `10.0.0.1/24` | VPN |
-
 ## WireGuard
 
 The actual config with private keys lives only on the server at `/etc/wireguard/wg0.conf` and is excluded from git. Only the template is tracked.
@@ -124,6 +114,7 @@ The actual config with private keys lives only on the server at `/etc/wireguard/
 ```bash
 # Server keys
 wg genkey | tee /etc/wireguard/server_private.key | wg pubkey > /etc/wireguard/server_public.key
+
 # Per-client keys
 wg genkey | tee client_private.key | wg pubkey > client_public.key
 ```
